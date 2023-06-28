@@ -3,6 +3,7 @@ import { ref, reactive, computed } from 'vue';
 import { useTodoStore } from '../stores/todo';
 import Header from '../components/v-header.vue'
 import Todo from '../components/v-todo.vue'
+import ButtonFilter from '../components/v-buttonFilter.vue'
 
 const todo = useTodoStore()
 const filtro = ref('all')
@@ -59,7 +60,7 @@ const toggleFilters = () => {
         </div>
 
         <div v-else class="bg-gray-800 rounded items-center mt-5">
-            <Todo v-for="todo in todo.tareas" :key="todo.id" :todo="todo" />
+            <Todo v-for="todo in todo.tareasFiltradas" :key="todo.id" :todo="todo" />
             <div class="flex justify-between py-3 mx-10 text-gray-500">
                 <p>{{ itemsLeft }} {{ textoTareas }}</p>
                 <button type="button" @click="todo.deleteCompleteTodos">Eliminar Completadas</button>
@@ -67,10 +68,11 @@ const toggleFilters = () => {
         </div>
 
         <div v-if="todo.tareas.length" class="bg-gray-800 rounded items-center mt-5">
-            <div class="">
-                <form class="flex justify-around py-3 text-gray-500" @submit.prevent="toggleFilters">
-                    <button @click="toggleFilters">All</button>
-                </form>
+            <div class="flex justify-between px-5 py-3">
+                <ButtonFilter 
+                    v-for="filtro in todo.filtros"
+                    :filtro="filtro"
+                />
             </div>
         </div>
     </main>
